@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+out/
+*.tsbuildinfo
+
+# Packaged extension
+*.vsix
+
+# Tests & coverage
+.vscode-test/
+coverage/
+.nyc_output/
+
+# Caches
+.eslintcache
+
+# Secrets & local env (never commit these)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+.idea/
+
+# Note: .vscode/ is intentionally tracked — launch.json and tasks.json are
+# needed for the F5 Extension Development Host workflow. package-lock.json is
+# also tracked for reproducible installs.
+
+# Local-only working docs (kept out of the published repo)
+temp/

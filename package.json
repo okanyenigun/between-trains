@@ -1,0 +1,324 @@
+{
+  "name": "between-trains",
+  "displayName": "Between Trains",
+  "description": "A waiting room for agentic development — turn agent-working intervals into short moments for learning, play, or calm.",
+  "version": "0.1.0",
+  "publisher": "yeniguno",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/okanyenigun/between-trains.git"
+  },
+  "bugs": {
+    "url": "https://github.com/okanyenigun/between-trains/issues"
+  },
+  "homepage": "https://github.com/okanyenigun/between-trains#readme",
+  "galleryBanner": {
+    "color": "#63342A",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.101.0"
+  },
+  "categories": [
+    "AI",
+    "Education",
+    "Other"
+  ],
+  "keywords": [
+    "agent",
+    "ai",
+    "waiting",
+    "productivity",
+    "ollama"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "betweenTrains.startManualSession",
+        "title": "Start Waiting Room",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.stopSession",
+        "title": "Stop Waiting Room",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.openWaitingRoom",
+        "title": "Open Waiting Room",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.toggleWaitingRoom",
+        "title": "Toggle Waiting Room",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.selectMode",
+        "title": "Select Mode",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.openSettings",
+        "title": "Open Settings",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.testOllamaConnection",
+        "title": "Test Ollama Connection",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.fetchMemes",
+        "title": "Fetch New Memes",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.fetchVideos",
+        "title": "Fetch New Videos",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.setNewsApiKey",
+        "title": "Set News Search API Key",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.showLocalMetadata",
+        "title": "Show Local Metadata Location",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.exportLocalMetadata",
+        "title": "Export Local Metadata",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.clearSessionHistory",
+        "title": "Clear Session History",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.resetPersonalization",
+        "title": "Reset Personalization",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.clearGeneratedContentCache",
+        "title": "Clear Generated Content Cache",
+        "category": "Between Trains"
+      },
+      {
+        "command": "betweenTrains.clearLocalMetadata",
+        "title": "Clear All Local Metadata",
+        "category": "Between Trains"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "betweenTrains.toggleWaitingRoom",
+        "key": "ctrl+q"
+      }
+    ],
+    "configuration": {
+      "title": "Between Trains",
+      "properties": {
+        "betweenTrains.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable Between Trains. When disabled, no waiting room is opened."
+        },
+        "betweenTrains.autoOpen.enabled": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Automatically open the waiting room when an agent is detected as working. Disabled by default; the MVP is manual-first."
+        },
+        "betweenTrains.defaultMode": {
+          "type": "string",
+          "enum": [
+            "lastUsed",
+            "ambient",
+            "microgame",
+            "learning"
+          ],
+          "enumDescriptions": [
+            "Reopen with the mode you used most recently.",
+            "A calm ambient visual (Ambient Zen).",
+            "A quick disposable micro-game.",
+            "AI-generated learning cards."
+          ],
+          "default": "lastUsed",
+          "markdownDescription": "Which mode to show when a waiting session opens."
+        },
+        "betweenTrains.ollama.baseUrl": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "markdownDescription": "Base URL of the local Ollama server used to generate learning cards."
+        },
+        "betweenTrains.ollama.model": {
+          "type": "string",
+          "default": "llama3.2",
+          "markdownDescription": "Ollama model used to generate learning cards."
+        },
+        "betweenTrains.ollama.timeoutMs": {
+          "type": "number",
+          "default": 30000,
+          "minimum": 1000,
+          "markdownDescription": "How long to wait for an Ollama response before giving up and using a fallback card."
+        },
+        "betweenTrains.brain.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Use the local Ollama brain to generate learning cards. When off, learning modes show curated offline cards."
+        },
+        "betweenTrains.brain.provider": {
+          "type": "string",
+          "enum": [
+            "ollama"
+          ],
+          "enumDescriptions": [
+            "Local Ollama server."
+          ],
+          "default": "ollama",
+          "markdownDescription": "Which local LLM backend the brain uses. More providers (e.g. vLLM, OpenAI-compatible) may be added later. Editable from the waiting room's Global config."
+        },
+        "betweenTrains.brain.workspaceContext.enabled": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Allow the brain to use small, safe hints from your workspace (e.g. the active file's language). Never sends source code. Disabled by default."
+        },
+        "betweenTrains.memes.autoFetch": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "When the Memes & GIFs mode opens, let the local agent automatically fetch a fresh batch from Tenor/Giphy. Off by default — fetching makes network requests."
+        },
+        "betweenTrains.memes.fetchCount": {
+          "type": "number",
+          "default": 20,
+          "minimum": 5,
+          "maximum": 50,
+          "markdownDescription": "How many new GIFs the agent tries to save per fetch."
+        },
+        "betweenTrains.videos.autoFetch": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "When the Video mode opens, let the local agent automatically fetch a fresh batch of YouTube videos. Off by default — fetching makes network requests."
+        },
+        "betweenTrains.videos.fetchCount": {
+          "type": "number",
+          "default": 15,
+          "minimum": 5,
+          "maximum": 40,
+          "markdownDescription": "How many new videos the agent tries to save per fetch."
+        },
+        "betweenTrains.news.provider": {
+          "type": "string",
+          "enum": [
+            "tavily",
+            "brave",
+            "serper"
+          ],
+          "enumDescriptions": [
+            "Tavily Search API.",
+            "Brave Search API (news endpoint).",
+            "Serper.dev (Google News)."
+          ],
+          "default": "tavily",
+          "markdownDescription": "Which web-search provider the News mode uses. Set the provider's API key from the waiting room's Global config (keys are stored in VS Code SecretStorage, never in settings)."
+        },
+        "betweenTrains.news.autoFetch": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "When a News category opens, let the agent automatically fetch fresh news. Off by default — fetching makes network requests to your chosen search provider."
+        },
+        "betweenTrains.news.fetchCount": {
+          "type": "number",
+          "default": 10,
+          "minimum": 3,
+          "maximum": 30,
+          "markdownDescription": "How many news cards the agent tries to save per fetch."
+        },
+        "betweenTrains.learning.autoFetch": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Automatically generate learning cards for a topic when you open it (respects the auto-fetch cooldown). Off by default."
+        },
+        "betweenTrains.learning.cardCount": {
+          "type": "number",
+          "default": 8,
+          "minimum": 3,
+          "maximum": 20,
+          "markdownDescription": "How many learning cards the agent tries to generate per topic per run."
+        },
+        "betweenTrains.autoFetch.cooldownMinutes": {
+          "type": "number",
+          "default": 30,
+          "minimum": 0,
+          "maximum": 1440,
+          "markdownDescription": "When a mode's auto-fetch is on, opening it re-fetches only if that content stream hasn't been fetched within this many minutes. Manual fetches always run and reset the timer. Set to `0` to always auto-fetch on open."
+        },
+        "betweenTrains.metadata.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Store local session and interaction metadata on this machine to personalize the experience. Nothing leaves your device."
+        },
+        "betweenTrains.metadata.retentionDays": {
+          "type": "number",
+          "default": 30,
+          "minimum": 1,
+          "markdownDescription": "How many days of raw local session history to keep before it is pruned."
+        }
+      }
+    }
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "Calm and game modes work in untrusted workspaces. Workspace-context features for learning cards are disabled until the workspace is trusted."
+    },
+    "virtualWorkspaces": {
+      "supported": "limited",
+      "description": "Local-first metadata and Ollama features assume a local extension host; static modes work in virtual workspaces."
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "^20.16.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.25.0",
+    "eslint": "^9.13.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.10.0"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.2.3",
+    "@langchain/ollama": "^1.3.0",
+    "langchain": "^1.5.3",
+    "zod": "^4.4.3"
+  }
+}
