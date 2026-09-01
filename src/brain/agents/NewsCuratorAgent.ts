@@ -159,7 +159,7 @@ async function runAgent(options: NewsCuratorRunOptions): Promise<number> {
     },
   );
 
-  const agent = createAgent({ model: createChatModel(settings), tools: [searchTool, saveTool] });
+  const agent = createAgent({ model: await createChatModel(settings), tools: [searchTool, saveTool] });
 
   await runAgentWithBudget({
     agent,

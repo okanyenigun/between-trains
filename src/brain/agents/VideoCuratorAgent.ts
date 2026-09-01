@@ -209,7 +209,7 @@ async function runAgent(options: VideoCuratorRunOptions): Promise<number> {
   );
 
   const agent = createAgent({
-    model: createChatModel(settings),
+    model: await createChatModel(settings),
     tools: [analyzeFeedback, searchTool, saveTool, getProgress],
   });
 

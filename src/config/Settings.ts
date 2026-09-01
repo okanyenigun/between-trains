@@ -29,8 +29,9 @@ export class Settings {
     return this.config.get<string>("ollama.baseUrl", "http://localhost:11434");
   }
 
+  /** The configured model, or "" when blank (meaning: auto-select an installed one). */
   get ollamaModel(): string {
-    return this.config.get<string>("ollama.model", "llama3.2");
+    return this.config.get<string>("ollama.model", "").trim();
   }
 
   get ollamaTimeoutMs(): number {

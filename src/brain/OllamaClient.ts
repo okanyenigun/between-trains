@@ -30,7 +30,10 @@ export class OllamaClient {
       }
       const data = (await res.json()) as { models?: { name?: string }[] };
       const models = (data.models ?? []).map((m) => m.name ?? "").filter(Boolean);
-      const modelAvailable = models.some((m) => m === model || m.startsWith(`${model}:`));
+      // A blank model means "auto-select an installed one", so any model counts.
+      const modelAvailable = model
+        ? models.some((m) => m === model || m.startsWith(`${model}:`))
+        : models.length > 0;
       return { reachable: true, baseUrl, model, models, modelAvailable };
     } catch (error) {
       return {

@@ -2,7 +2,7 @@
   "name": "between-trains",
   "displayName": "Between Trains",
   "description": "A waiting room for agentic development — turn agent-working intervals into short moments for learning, play, or calm.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "yeniguno",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -163,8 +163,8 @@
         },
         "betweenTrains.ollama.model": {
           "type": "string",
-          "default": "llama3.2",
-          "markdownDescription": "Ollama model used to generate learning cards."
+          "default": "",
+          "markdownDescription": "Ollama model to use. Leave blank to auto-select the first model installed on your Ollama server; set a name (e.g. `llama3.2`) to always use that one. Pull models with `ollama pull <model>`."
         },
         "betweenTrains.ollama.timeoutMs": {
           "type": "number",

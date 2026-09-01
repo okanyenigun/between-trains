@@ -1162,8 +1162,12 @@
     let text = (s.total || 0) + " to review";
     if (s.generating) {
       text += " · generating " + (s.savedThisRun || 0) + "…";
-    } else if (s.lastResult && !s.lastResult.ok && s.lastResult.error === "failed") {
-      text += " · last run failed";
+    } else if (s.lastResult && !s.lastResult.ok) {
+      if (s.lastResult.error === "no-brain") {
+        text += " · Ollama not reachable";
+      } else if (s.lastResult.error === "failed") {
+        text += " · last run failed";
+      }
     }
     return text;
   }
@@ -1240,16 +1244,37 @@
         box.appendChild(el("div", "bt-spinner"));
         box.appendChild(el("p", "bt-meme-empty", "The agent is writing " + s.topicTitle + " cards…"));
       } else {
-        box.appendChild(el("div", "bt-mode-emoji", reviewed ? "🎉" : "🧠"));
-        box.appendChild(
-          el(
-            "p",
-            "bt-meme-empty",
-            reviewed
-              ? "You've reviewed every card. Press Generate for more — it'll focus on what you didn't know."
-              : "No cards yet. Press Generate to create some."
-          )
-        );
+        const err = s.lastResult && !s.lastResult.ok ? s.lastResult.error : null;
+        if (err === "no-brain") {
+          box.appendChild(el("div", "bt-mode-emoji", "🔌"));
+          box.appendChild(
+            el(
+              "p",
+              "bt-meme-empty",
+              'Ollama isn\'t reachable, or no model is installed. Start Ollama and pull a model — e.g. run "ollama pull llama3.2" — then press Generate. Run "Between Trains: Test Ollama Connection" to check.'
+            )
+          );
+        } else if (err === "failed") {
+          box.appendChild(el("div", "bt-mode-emoji", "⚠️"));
+          box.appendChild(
+            el(
+              "p",
+              "bt-meme-empty",
+              "The last generation failed. Make sure Ollama is running with a model installed, then press Generate again."
+            )
+          );
+        } else {
+          box.appendChild(el("div", "bt-mode-emoji", reviewed ? "🎉" : "🧠"));
+          box.appendChild(
+            el(
+              "p",
+              "bt-meme-empty",
+              reviewed
+                ? "You've reviewed every card. Press Generate for more — it'll focus on what you didn't know."
+                : "No cards yet. Press Generate to create some."
+            )
+          );
+        }
       }
       wrap.appendChild(box);
     }

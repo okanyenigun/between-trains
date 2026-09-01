@@ -203,7 +203,7 @@ async function runAgent(options: CuratorRunOptions): Promise<number> {
   );
 
   const agent = createAgent({
-    model: createChatModel(settings),
+    model: await createChatModel(settings),
     tools: [analyzeFeedback, searchGifs, saveGif, getProgress],
   });
 

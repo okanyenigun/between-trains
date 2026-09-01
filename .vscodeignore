@@ -4,6 +4,7 @@
 src/**
 out/**
 temp/**
+docs/**
 node_modules/**
 .github/**
 .gitignore

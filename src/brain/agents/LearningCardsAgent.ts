@@ -88,7 +88,7 @@ export async function runLearningCards(options: LearningRunOptions): Promise<num
     }
   );
 
-  const agent = createAgent({ model: createChatModel(settings), tools: [saveTool] });
+  const agent = createAgent({ model: await createChatModel(settings), tools: [saveTool] });
 
   const avoid = [...known].slice(0, 30);
   const weak = weakConcepts.slice(0, 20);

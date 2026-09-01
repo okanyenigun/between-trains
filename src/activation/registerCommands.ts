@@ -121,18 +121,22 @@ export function registerCommands(deps: RegisterCommandsDeps): void {
     );
     if (!status.reachable) {
       void vscode.window.showWarningMessage(
-        `Between Trains: could not reach Ollama at ${status.baseUrl}${status.error ? ` (${status.error})` : ""}. Learning modes will use offline cards.`
+        `Between Trains: could not reach Ollama at ${status.baseUrl}${status.error ? ` (${status.error})` : ""}. Memes/videos/news fall back to an offline fetcher; Learning Cards need Ollama running.`
       );
       return;
     }
     if (!status.modelAvailable) {
       void vscode.window.showWarningMessage(
-        `Between Trains: connected to Ollama at ${status.baseUrl}, but model "${status.model}" was not found. Available: ${status.models.join(", ") || "none"}.`
+        status.model
+          ? `Between Trains: connected to Ollama at ${status.baseUrl}, but model "${status.model}" isn't installed. Run "ollama pull ${status.model}", or pick an installed model in Global config. Installed: ${status.models.join(", ") || "none"}.`
+          : `Between Trains: connected to Ollama at ${status.baseUrl}, but no models are installed. Pull one, e.g. "ollama pull llama3.2".`
       );
       return;
     }
     void vscode.window.showInformationMessage(
-      `Between Trains: connected to Ollama at ${status.baseUrl} — model "${status.model}" is ready.`
+      status.model
+        ? `Between Trains: connected to Ollama at ${status.baseUrl} — model "${status.model}" is ready.`
+        : `Between Trains: connected to Ollama at ${status.baseUrl} — will auto-use "${status.models[0]}". Set a model in settings to pin a specific one.`
     );
   });
 

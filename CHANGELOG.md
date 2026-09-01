@@ -6,6 +6,28 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-09-01
+
+### Changed
+
+- **Marketplace-oriented README** — product-forward intro, a hero shot, and a
+  visual feature grid (Ambient Zen, Media, Learning Cards, Micro-Games).
+
+### Fixed
+
+- **Ollama model selection.** The `ollama.model` setting now defaults to **blank**
+  and auto-selects the first model installed on your Ollama server (set a name to
+  pin a specific one). It previously defaulted to `llama3.2`, which looked installed
+  even when it wasn't — so Learning Cards silently did nothing on machines without
+  that model pulled.
+- **Learning Cards no longer fail silently.** When Ollama is enabled but unreachable
+  or has no model installed, pressing **Generate** now shows a clear, actionable
+  message (start Ollama / pull a model / run *Test Ollama Connection*) instead of
+  nothing, and the status line notes "Ollama not reachable".
+- **Clearer "Test Ollama Connection" messages** — accurate fallback wording (Learning
+  Cards need Ollama; other modes fall back offline) and specific hints for a missing
+  or blank model.
+
 ## [0.1.0] - 2026-08-28
 
 First public release — a local-first waiting room for the gaps while an AI agent works.
